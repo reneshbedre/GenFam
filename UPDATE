@@ -1,0 +1,3 @@
+v1.1 release Oct 31, 2019 (release for minor changes)
+1. Enriched gene families are ranked as per FDR values
+2. The format of P-value and FDR changed in scientific notation

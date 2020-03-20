@@ -1,0 +1,1 @@
+update "{}" as a set gene_fam = b.gene_fam from ath_gene_fam as b where upper(a.at_gene_hit) = upper(b.loc_tag)

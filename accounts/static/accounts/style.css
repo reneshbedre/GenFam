@@ -1,0 +1,14 @@
+body{
+    font-family: Verdana;
+}
+
+.navbar-static-top {
+    background-color: #3CB371;
+    border-color: #E7E7E7;
+}
+.navbar-static-top .navbar-nav > li > a:hover{
+    background-color:#FF8C00;
+}
+.navbar-fixed-bottom {
+    background-color: #3CB371;
+    border-color: #E7E7E7;

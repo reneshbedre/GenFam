@@ -1,0 +1,157 @@
+{% extends 'accounts/header.html' %}
+{% load bootstrap %}
+
+<title>{% block title %}Results{% endblock %}</title>
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+             <div class="alert alert-success">
+                 {{ header }} (Process ID: {{ user }})
+            </div>
+
+             <!-- print warning message if chi-s test assumptions of cell frequency count -->
+            {% if chi_cell_count > 0%}
+                    <div class="alert alert-warning">
+                    Some gene families have more than 20% cells with expected frequency count < 5. Chi-square test may
+                    not be valid test. You can validate those gene families for enrichment using fisher exact test.
+                    Download file and see last column for expected frequency count.
+                    </div>
+            {% endif %}
+
+            <!-- If no enriched gene families found show only all gene families -->
+            {% if line_count > 1%}
+                <p>Number of gene annotated = {{anot_count}} (Total query IDs = {{query_id_count}})</p>
+                <button type="button" id="enriched" class="btn btn-primary">Enriched Gene Families</button>
+                <button type="button" id="all" class="btn btn-info">All Gene Families</button>
+                <button type="button" id="fig" class="btn btn-warning" >Get Figures</button>
+                <br><br>
+            {% elif line_count == 1 %}
+                <p style="color:red">No enriched gene families (P-value <0.05) found</p>
+                <p>Number of gene annotated = {{anot_count}} (Total query IDs = {{query_id_count}})</p>
+                <button type="button" id="all_no_enrich" class="btn btn-info">All Gene Families</button>
+                <br><br>
+            {% endif %}
+
+            <!-- Show Enriched GO Content -->
+            <div class="show_enrich_go_content" style="display: none;">
+                <button type="button" class="btn btn-default">
+                    <a href="{% url 'family:download_enrich' %}" style="color:#DEB887; text-decoration: none;">
+                        Download File with GO annotation</a>
+               </button>
+                <button type="button" class="btn btn-default">
+                    <a href="{{MEDIA_URL}}output_files/{{ user }}/fam_enrich_out.txt" target="_blank" style="color:#DEB887; text-decoration: none;">View in browser</a>
+                </button>
+                <br><br>
+                <p>Over enriched gene family (P-value <0.05)</p>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Gene family</th>
+                            <th>Short name</th>
+                            <th>P-value</th>
+                            <th>FDR</th>
+                        </tr>
+                    </thead>
+                     {% for item in go_enrich_content %}
+                        {% cycle '<tr>' '' '' '' %}
+                                <td>{{ item }}</td>
+                         {% cycle '' '' '' '</tr>' %}
+                     {% endfor %}
+                 </table>
+            </div>
+            <!-- Show All GO Content -->
+            <div class="show_all_go_content" style="display: none;">
+                 <button type="button" class="btn btn-default">
+                    <a href="{% url 'family:download_all' %}" style="color:#DEB887; text-decoration: none;">
+                        Download File</a>
+                 </button>
+                <button type="button" class="btn btn-default">
+                    <a href="{{MEDIA_URL}}output_files/{{ user }}/fam_all_out.txt" target="_blank" style="color:#DEB887; text-decoration: none;">View in browser</a>
+                </button>
+                <br><br>
+                 <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Gene family</th>
+                            <th>Short name</th>
+                            <th>P-value</th>
+                            <th>FDR</th>
+                        </tr>
+                    </thead>
+                     {% for item in go_all_content %}
+                        {% cycle '<tr>' '' '' '' %}
+                                <td>{{ item }}</td>
+                         {% cycle '' '' '' '</tr>' %}
+                     {% endfor %}
+                 </table>
+            </div>
+
+            <!-- for figure -->
+            <div class="col-md-4 col-md-offset-3" style="top:30px;">
+                <div class="show_fig" style="display: none;">
+                    <button type="button" class="btn btn-default">
+                        <a href="{% url 'family:download_fig' %}" style="color:#DEB887; text-decoration: none;">
+                        Download Figure</a>
+                    </button>
+                    <button type="button" class="btn btn-default">
+                        <a href="{{MEDIA_URL}}output_files/{{ user }}/fam_enrich_out.png" target="_blank" style="color:#DEB887; text-decoration: none;">View in browser</a>
+                    </button>
+                    <img src="{{ MEDIA_URL }}output_files/{{ user }}/fam_enrich_out.png">
+
+                </div>
+            </div>
+
+             <script>
+                $(document).ready(function(){
+                    $('#enriched').click(function(){
+                        $(".show_enrich_go_content").show();
+                        $(".show_all_go_content").hide();
+                         $(".show_fig").hide();
+                        });
+                });
+            </script>
+            <script>
+                $(document).ready(function(){
+                    $('#all').click(function(){
+                        $(".show_all_go_content").show();
+                        $(".show_enrich_go_content").hide();
+                        $(".show_fig").hide();
+                       });
+                });
+            </script>
+
+            <script>
+                $(document).ready(function(){
+                    $('#fig').click(function(){
+                        $(".show_fig").show();
+                        $(".show_enrich_go_content").hide();
+                         $(".show_all_go_content").hide();
+                       });
+                });
+            </script>
+            <!-- when no enriched gene founds -->
+            <script>
+                $(document).ready(function(){
+                    $('#all_no_enrich').click(function(){
+                        $(".show_all_go_content").show();
+                       });
+                });
+            </script>
+         </div>
+    </div>
+    <input type="hidden" id="refreshed" value="no">
+
+    <script type="text/javascript">
+	    onload=function(){
+	    var e=document.getElementById("refreshed");
+	    if(e.value=="no")e.value="yes";
+	    else{e.value="no";location.reload();}
+	    }
+    </script>
+</div>
+<br><br><br><br><br><br><br><br>
+{% include 'accounts/footer.html' %}
+{% endblock %}

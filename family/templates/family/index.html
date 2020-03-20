@@ -1,0 +1,683 @@
+{% extends 'accounts/header.html' %}
+{% load bootstrap %}
+
+<title>{% block title %}Family Enrichment Analysis{% endblock %}</title>
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <p>Gene Family Enrichment Analysis</p>
+            <form  action="{% url 'family:index' %}"  method="post" name="seq_form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- <label for="nucleotide">Sequence IDs:</label><br> -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger" >
+                            <p><strong>{{ message|safe }}<strong</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {{ form.gene_ids | bootstrap }}
+                <a href="{{MEDIA_URL}}input_files/test/gene_id_file.txt" target="_blank">Test dataset for
+                    <i>G. raimondii</i></a> (Species: <i>Gossypium raimondii</i> and ID type: Phytozome locus)
+               <!-- <label class="btn btn-default btn-file">select a file
+                <input type="file" name="seq_file" style="display: none;"
+                       onchange="$('#upload-file-info').html($(this).val().replace(/C:\\fakepath\\/i, ''));"></label>
+                <span class='label label-info' id="upload-file-info"></span> -->
+                <br><br>
+                <!-- select plant species -->
+                <!--<label>Select Plant Species:</label>-->
+                {{ form.plant_select | bootstrap }}
+                {{ form.ID_select | bootstrap }}
+                 <!-- select statistical significance test -->
+                {{ form.stat_sign_test | bootstrap }}
+                <!-- select multiple testing corrections -->
+                <!--<label>Select Multiple Testing Corrections:</label>-->
+                {{ form.multi_test_corr | bootstrap }}
+                <br>
+
+                <!--
+                    <div class="confirmation" style="display: none;">
+                        <div class="alert alert-info" >
+                            <strong class="confirmation">Process Running</strong> yes Hold On! Data is analyzing...
+                        </div>
+                    </div>
+                -->
+                <!--
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-info" >
+                            <p><strong>{{ message }}<strong</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                 -->
+                <button  type="submit" id="u-message"  class="btn btn-success">Run</button>
+            </form>
+
+            <!-- JS to display message when data is analyzing -->
+            <!--
+                <script>
+                    $(document).ready(function(){
+                        $('#u-message').click(function(){
+                            $(".confirmation").show();
+                            $(".hide_error").hide();
+                            });
+                    });
+                </script>
+               -->
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Check allowed ID type for each plant species:</label>
+                <select class="form-control" id="check_plant_id">
+                    <option value="0">--Select--</option>
+                    <option value="1">Amaranthus hypochondriacus</option>
+                    <option value="2">Amborella trichopoda</option>
+                   <!-- <option value="3">Anacardium occidentale</option>-->
+                    <option value="4">Ananas comosus</option>
+                   <!-- <option value="8">Aquilegia coerulea</option> -->
+                    <!-- <option value="6">Arabidopsis halleri</option> -->
+                    <option value="7">Arabidopsis lyrata</option>
+                    <option value="5">Arabidopsis thaliana</option>
+                    <option value="9">Boechera stricta</option>
+                    <option value="10">Brachypodium distachyon</option>
+                   <!-- <option value="11">Brachypodium stacei</option>
+                    <option value="67">Brachypodium sylvaticum</option> -->
+                    <option value="12">Brassica oleracea</option>
+                  <!--  <option value="13">Brassica rapa</option> -->
+                    <option value="14">Capsella grandiflora</option>
+                    <option value="15">Capsella rubella</option>
+                    <option value="16">Carica papaya</option>
+                    <option value="17">Chenopodium quinoa</option>
+                    <option value="18">Chlamydomonas reinhardtii</option>
+                    <option value="19">Chromochloris zofingiensis</option>
+                    <option value="68">Cicer arietinum</option>
+                    <option value="20">Citrus clementina</option>
+                    <option value="21">Citrus sinensis</option>
+                    <option value="69">Coccomyxa subellipsoidea</option>
+                    <option value="70">Cucumis sativus</option>
+                    <option value="23">Daucus carota</option>
+                    <option value="24">Dunaliella salina</option>
+                    <option value="25">Eucalyptus grandis</option>
+                    <option value="26">Eutrema salsugineum</option>
+                    <option value="27">Fragaria vesca</option>
+                    <option value="30">Glycine max Wm82.a2.v1</option>
+                   <!-- <option value="28">Gossypium hirsutum</option> -->
+                    <option value="29">Gossypium raimondii</option>
+                    <option value="31">Hordeum vulgare</option>
+                    <option value="32">Kalanchoe fedtschenkoi</option>
+                    <!-- <option value="33">Kalanchoe laxiflora</option> -->
+                    <option value="71">Lactuca sativa</option>
+                    <option value="34">Linum usitatissimum</option>
+                    <option value="35">Malus domestica</option>
+                    <option value="36">Manihot esculenta</option>
+                    <option value="37">Marchantia polymorpha</option>
+                    <option value="38">Medicago truncatula</option>
+                    <option value="39">Micromonas pusilla</option>
+                    <option value="40">Mimulus guttatus</option>
+                    <option value="41">Musa acuminata</option>
+                    <option value="72">Olea europaea</option>
+                    <option value="42">Oropetium thomaeum</option>
+                    <option value="43">Oryza sativa</option>
+                    <option value="44">Ostreococcus lucimarinus</option>
+                    <option value="73">Olea europaea</option>
+                    <!-- <option value="45">Panicum virgatum</option>
+                    <option value="46">Phaseolus vulgaris</option> -->
+                    <option value="47">Physcomitrella patens</option>
+                   <!-- <option value="48">Populus deltoides</option> -->
+                    <option value="49">Populus trichocarpa</option>
+                    <option value="74">Porphyra umbilicalis</option>
+                    <option value="50">Prunus persica</option>
+                    <option value="51">Ricinus communis</option>
+                   <!-- <option value="52">Salix purpurea</option> -->
+                    <option value="53">Selaginella moellendorffii</option>
+                    <option value="54">Setaria italica</option>
+                    <!-- <option value="55">Setaria viridis v1.1</option> -->
+                    <option value="57">Solanum lycopersicum (ITAG2.4)</option>
+                    <option value="56">Solanum tuberosum</option>
+                    <option value="58">Sorghum bicolor</option>
+                    <!-- <option value="59">Sphagnum fallax</option> -->
+                    <option value="60">Spirodela polyrhiza</option>
+                    <option value="61">Theobroma cacao</option>
+                    <option value="62">Trifolium pratense</option>
+                    <option value="63">Triticum aestivum</option>
+                    <!-- <option value="75">Vigna unguiculata</option> -->
+                    <option value="64">Vitis vinifera</option>
+                    <option value="65">Volvox carteri</option>
+                    <option value="66">Zea mays</option>
+                    <option value="76">Zostera marina</option>
+                </select>
+            </div>
+            <div class="message"  style="display:none;">
+                <div class="alert alert-info">
+                    Phytozome locus: <p id="phyt_locus" style="display:inline"></p>
+                    <br>
+                    Phytozome transcript: <p id="phyt_trn" style="display:inline"></p>
+                    <br>
+                    Phytozome pacID: <p id="phyt_pac" style="display:inline"></p>
+                    <br>
+                    Note: <p id="note" style="display:inline"></p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function phyt_locus_f(value) {
+               return value;
+            }
+            function phyt_trn_f(value) {
+               return value;
+            }
+            function phyt_pac_f(value) {
+               return value;
+            }
+            function phyt_note_f(value) {
+               return value;
+            }
+
+            $(document).ready(function() {
+                $('#check_plant_id').change(function() {
+                    var selectedValue = $(this).val();
+                    if (selectedValue == '5') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("AT1G01073");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("AT1G01073.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("19655091");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '10') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Bradi1g00410");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Bradi1g00410.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32802569");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '29') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Gorai.001G002100");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Gorai.001G002100.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("26824780");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '43') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("LOC_Os01g06882");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("LOC_Os01g06882.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("24120792");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '58') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Sobic.001G013600");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Sobic.001G013600.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32753228");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '6') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Araha.0005s0001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Araha.0005s0001.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("28838662");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '30') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Glyma.01G000100");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Glyma.01G000100.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("30544134");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '8') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Aqcoe0008s0001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Aqcoe0008s0001.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("33091744");
+                        $('.message').show();
+                    }
+                     else if (selectedValue == '1') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("AH003586");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("AH003586-RA");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("38177778");
+                        $('.message').show();
+                    }
+                     else if (selectedValue == '2') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("evm_27.TU.AmTr_v1.0_scaffold00088.96");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("evm_27.model.AmTr_v1.0_scaffold00088.9");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("31575332");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '3') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Anaoc.0005s0410");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Anaoc.0005s0410.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("37499689");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '4') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Aco008306");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Aco008306.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("33037074");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '6') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Araha.1149s0001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Araha.1149s0001.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("28842046");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '7') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("AL100U10020");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("AL100U10020.t1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("35918505");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '9') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Bostr.0124s0059");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Bostr.0124s0059.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("30650504");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '11') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Brast03G171400");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Brast03G171400.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32851955");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '12') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Bol018174");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Bol018174");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("37344717");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '13') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Brara.A00022");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Brara.A00022.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("30606619");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '14') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Cagra.2179s0034");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Cagra.2179s0034.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("28918674");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '15') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Carubv10010024m.g");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Carubv10010024m");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("20886308");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '16') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("evm.TU.supercontig_1007.4");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("evm.TU.supercontig_1007.4");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("16404756");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '17') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("AUR62000001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("AUR62000001-RA");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("36298417");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '18') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Cre01.g000017");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Cre01.g000017.t1.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("30789166");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '19') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Cz01g38030");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Cz01g38030.t1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("38237102");
+                        $('.message').show();
+                    }
+                     else if (selectedValue == '20') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Ciclev10000039m.g");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Ciclev10000039m");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("20785556");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '21') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("orange1.1g019688m.g");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("orange1.1g019688m");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("18102736");
+                        $('.message').show();
+                    }
+                     else if (selectedValue == '23') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("DCAR_000358");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("DCAR_000358");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("36053431");
+                        $('.message').show();
+                    }
+                     else if (selectedValue == '24') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Dusal.0096s00009");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Dusal.0096s00009.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("33195811");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '25') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Eucgr.B02593");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Eucgr.B02593.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32060060");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '26') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Thhalv10005611m.g");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Thhalv10005611m");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("20182879");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '27') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("gene11561-v1.0-hybrid");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("mrna11561.1-v1.0-hybrid");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("27251918");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '28') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Gohir.1Z000100");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Gohir.1Z000100.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("38100970");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '31') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("HORVU0Hr1G006270");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("HORVU0Hr1G006270.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("38335929");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '32') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Kaladp0085s0105");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Kaladp0085s0105.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("35740596");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '33') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Kalax.0002s0316");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Kalax.0002s0316.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32536018");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '34') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Lus10005338.g");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Lus10005338");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("23145494");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '35') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("MDP0000133188");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("MDP0000133188");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("22630136");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '36') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Manes.08G128800");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Manes.08G128800.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32331561");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '37') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Mapoly0030s0128");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Mapoly0030s0128.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("33006753");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '38') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Medtr2g100250");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Medtr2g100250.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("31063907");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '39') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("MicpuC2.EuGene.0000040813");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("57687");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("27346595");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '40') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Migut.B01061");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Migut.B01061.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("28946595");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '41') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("GSMUA_Achr4G09330_001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("GSMUA_Achr4T09330_001");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32297453");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '42') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Oropetium_20150105_02264");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Oropetium_20150105_02264A");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("36019889");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '44') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("fgenesh1_pg.C_Chr_5000242");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("15490");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("27416762");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '45') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Pavir.1KG004700");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Pavir.1KG004700.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("37562941");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '46') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Phvul.004G171600");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Phvul.004G171600.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("37162235");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '47') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Pp3c11_11190");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Pp3c11_11190V3.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32909828");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '48') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Podel.02G116800");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Podel.02G116800.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("37299156");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '49') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Potri.001G008500");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Potri.001G008500.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("37219667");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '50') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Prupe.1G382900");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Prupe.1G382900.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32093170");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '51') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("29607.t000001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("29607.m000232");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("16803579");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '52') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("SapurV1A.0024s0530");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("SapurV1A.0024s0530.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("31400343");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '53') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("440949");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("440949");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("15408735");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '54') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Seita.2G181800");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Seita.2G181800.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32708491");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '55') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Sevir.2G262300");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Sevir.2G262300.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32636433");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '56') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("PGSC0003DMG400014174");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("PGSC0003DMT400036749");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("37453284");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '59') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Sphfalx0081s0005");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Sphfalx0081s0005.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32608092");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '60') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Spipo20G0029600");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Spipo20G0029600");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("31509530");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '61') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Thecc1EG011795");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Thecc1EG011795t1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("27457502");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '62') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Tp57577_TGAC_v2_gene14818");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Tp57577_TGAC_v2_mRNA15314");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("35969939");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '63') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Traes_1AL_0F39673AF1");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Traes_1AL_0F39673AF1.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("31734603");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '64') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("GSVIVG01037758001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("GSVIVT01037758001");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("17842276");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '65') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Vocar.0001s1264");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Vocar.0001s1264.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("32885521");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '57') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Solyc01g100490.2");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Solyc01g100490.2.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("27300963");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '66') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("AC148152.3_FG001 or GRMZM2G000009");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("AC148152.3_FGT001 or GRMZM2G000009_T01");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("30966741 or 30991566");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '67') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Brasy1G000100");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Brasy1G000100.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("40054062");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '68') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Ca_00001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Ca_00001");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("40150489");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '69') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("gw1.5.69.1");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("gw1.5.69.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("27387291");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '70') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Cucsa.000200.1");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Cucsa.000200.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("NA");
+                        document.getElementById("note").innerHTML = phyt_note_f("pacID and GO information not available");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '71') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Lsat_1_v5_gn_0_100");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Lsat_1_v5_gn_0_100.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("38936327");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '72') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Oeu000001.1");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Oeu000001.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("37705445");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '73') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Pahal.1G000100");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Pahal.1G000100.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("40381234");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '74') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Pum0014s0001");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Pum0014s0001.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("38015863");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '75') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Vigun01g000100");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Vigun01g000100.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("39049036");
+                        $('.message').show();
+                    }
+                    else if (selectedValue == '76') {
+                        document.getElementById("phyt_locus").innerHTML = phyt_locus_f("Zosma1002g00010");
+                        document.getElementById("phyt_trn").innerHTML = phyt_trn_f("Zosma1002g00010.1");
+                        document.getElementById("phyt_pac").innerHTML = phyt_pac_f("33170209");
+                        $('.message').show();
+                    }
+                    else {
+                        $('.message').hide();
+                    }
+                   });
+            });
+</script>
+
+    <br>
+    <div class="row">
+        {% if response %}
+             {% if flag == 0 %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ heading }}</div>
+                    <div class="panel-body">{{ response }}</div>
+                </div>
+            {% elif flag == 1 %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">{{ heading }}</div>
+                    <div class="panel-body">{{ response }}</div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+    <input type="hidden" id="refreshed" value="no">
+
+    <script type="text/javascript">
+	    onload=function(){
+	    var e=document.getElementById("refreshed");
+	    if(e.value=="no")e.value="yes";
+	    else{e.value="no";location.reload();}
+	    }
+    </script>
+</div>
+
+<br><br><br><br><br><br>
+{% include 'accounts/footer.html' %}
+
+
+
+
+{% endblock %}

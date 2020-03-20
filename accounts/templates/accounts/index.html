@@ -1,0 +1,50 @@
+{% extends 'accounts/header.html' %}
+{% load bootstrap %}
+{% load staticfiles %}
+
+<!-- tab title -->
+{% block title %}Welcome to GenFam Project{% endblock %}
+
+{% block body %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+            <h4><b>GenFam: Gene Family based classification and enrichment analysis</b></h4>
+            <p>GenFam is a comprehensive classification and enrichment analysis tool for plant genomes. It is
+                a user-friendly web application providing unique way to characterize the large-scale gene datasets such as
+                        those from transcriptome analysis.</p>
+            <ul>
+                <li>New functional classification and enrichment approach, where plant gene families are used to identify
+                    overrepresented gene functions</li>
+                <br>
+                <li>Web based and easy to handle graphical-user interface which allows users to readily input gene lists,
+                    and export results in both tabular and graphical formats</li>
+                 <br>
+                <li>Statistical parameters can be customized as per user interest and data type</li>
+                 <br>
+                <li>Currently supports sixty plant genomes and gene identifiers that are available on
+                    Phytozome v12.0 database</li>
+            </ul>
+                     <br>
+            <p>To perform analysis <a href="{% url 'family:index' %}">click here</a></p>
+                    <br>
+                    <h6><b>How to cite:</b></h6>
+                    <p>Bedre, R, Mandadi, K. GenFam: A web application and database for gene family‐based
+                        classification and functional enrichment analysis. Plant Direct. 2019; 3: 1– 7.
+                        https://doi.org/10.1002/pld3.191</p>
+            </div>
+                <div class="col-md-6">
+                    <img src="{% static 'accounts/fam_enrich_out.png' %}" height="580px" width="560px">
+                </div>
+            </div>
+            </div>
+            <br><br><br><br>
+            <br><br><br><br>
+
+
+        {% include 'accounts/footer.html' %}
+
+
+
+{% endblock %}

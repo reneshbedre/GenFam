@@ -1,0 +1,49 @@
+{% extends 'accounts/header.html' %}
+{% load bootstrap %}
+
+<title>{% block title %}Family Enrichment Analysis{% endblock %}</title>
+
+{% block body %}
+    <div class="container">
+        <h4><b>Download source code and database</b></h4>
+        <br>
+
+
+        <ul>
+            <li><b>Version 1.1 release Oct 31, 2019 (release for minor changes)</b></li>
+            <br>
+            <button type="button" class="btn btn-default">
+                <a href="{{MEDIA_URL}}src/GenFam_src_v1.1.tar.gz" target="_blank" style="color:#DEB887; text-decoration: none;">Source code</a>
+            </button>
+            <br>
+                <ul>
+                    <li>Enriched gene families are ranked as per FDR values</li>
+                    <li>The format of P-value and FDR changed in scientific notation</li>
+                </ul>
+            <br>
+            <li><b>Version 1.0 </b></li>
+            <br>
+            <button type="button" class="btn btn-default">
+                <a href="{{MEDIA_URL}}src/GenFam_src.tar.gz" target="_blank" style="color:#DEB887; text-decoration: none;">Source code and database</a>
+            </button>
+
+        </ul>
+
+    </div>
+
+        {% include 'accounts/footer.html' %}
+
+
+        <!-- footer
+        <div class="container">
+        {% include 'accounts/footer.html' %}
+        </div>
+        -->
+
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>

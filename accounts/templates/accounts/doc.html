@@ -1,0 +1,78 @@
+{% extends 'accounts/header.html' %}
+{% load bootstrap %}
+
+<title>{% block title %}Family Enrichment Analysis{% endblock %}</title>
+
+{% block body %}
+    <div class="container">
+        <h4><b>Quick start analysis guide</b></h4>
+        <br>
+        <ol>
+            <li><b>Input the list of gene IDs in <font color="red">Sequence IDs</font> form
+            </b></li>
+            <br>
+            <p>Paste the list of genes in Sequence IDs form. Each line should contain one gene ID
+                as per Phytozome v12.0 database format. You can check the allowed IDs for each plant species on the
+                analysis
+                page. <br><br> For example, allowed IDs for Rice (<i>Oryza sativa</i>) are, <br><br>
+                Phytozome locus: LOC_Os01g06882 <br> Phytozome transcript: LOC_Os01g06882.1 <br> Phytozome pacID:
+                24120792</p>
+            <br>
+
+            <li><b>Select <font color="red">plant species</font> from dropdown menu</b></li>
+            <br>
+            <p>Select plant species corresponding to the gene IDs. Currently, GenFam
+                supports analysis of sixty plant genomes.</p>
+            <br>
+            <li><b>Select <font color="red">plant ID type</font> from dropdown menu</b></li>
+            <br>
+            <p>Select the plant ID type for respective plant species. Please, refere step 1 for allowed IDs type for
+            GenFam analysis. Note: Do not combine different ID types while performing enrichment analysis.</p>
+
+            <br>
+            <li><b>Select <font color="red">statistical significance test</font> from enrichment analysis</b></li>
+            <br>
+            <p>Select the statistical significance test from dropdown menu. Currently, GenFam supports four tests for
+                enrichment analysis including, <b><i>Fisher exact test</i>, <i>Hypergeometric distribution</i>, <i>Binomial
+                    distribution</i> and <i>Chi-squared distribution</i></b>, thus providing flexibility in the analysis
+                based on the sample size and user preferences.</p>
+            <p>We recommend using Fisher exact test, chi-square test and hypergeometric distribution for smaller
+                datasets (< 1000 gene IDs), and binomial distribution for larger datasets.</p>
+
+            <br>
+            <li><b>Select <font color="red">multiple testing correction</font> for enrichment analysis</b></li>
+            <br>
+            <p>Select the  multiple testing correction test from dropdown menu. GenFam supports Bonferroni,
+                Bonferroni-Holm and Benjamini-Hochberg tests for correcting P-values.</p>
+
+            <br>
+            <li><b>Select <font color="red">Run</font> to perform enrichment analysis</b></li>
+            <br>
+            <p>Once all parameters selected, click run to perform the analysis.</p>
+
+            <br>
+            <li><b>GenFam enrichment ouput</b></li>
+            <br>
+            <p>If enrichment analysis is performed successfully, you will receive a message <font color="red">"Success!
+                Data Analysis Completed"</font>.</p>
+            <p>You can obtain results for <b>All Enriched Families</b>, <b>All Gene Families</b> and <b>Get Figures</b></p>
+            <p>"All Enriched Families" file contain results for gene families enriched with P-value < 0.05. "All Gene
+                Families" file contain results for all gene families which are classified based on user dataset.
+                Get figures will generate the bar graph of
+            enriched gene families.</p>
+
+        </ol>
+        <br><br><br><br>
+
+    </div>
+
+        {% include 'accounts/footer.html' %}
+
+
+        <!-- footer
+        <div class="container">
+        {% include 'accounts/footer.html' %}
+        </div>
+        -->
+
+{% endblock %}
