@@ -74,18 +74,18 @@ WSGI_APPLICATION = 'anot.wsgi.application'
 
 # settings for webfaction
 # anot is a database for user information. on release
-# '''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'anot',
-        'USER': 'renesh',
-        'PASSWORD': '927122',
+        'NAME': 'postgres',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
-# '''
+
 
 '''
 # for office macbook
