@@ -1,0 +1,7 @@
+django
+django-bootstrap-form
+django-crispy-forms
+psycopg2
+matplotlib
+scipy
+django-easy-timezones
