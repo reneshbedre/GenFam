@@ -214,7 +214,9 @@ def fam_enrich(_id_file, _plant_select, _stat_sign_test, _multi_test_corr, user,
        # con = psycopg2.connect(database='family_db_32019', user='renesh', password='', host="127.0.0.1", port="5432")
        # con = psycopg2.connect(database='family_db_32019', user='denise', password='', host="127.0.0.1", port="5432")
        # con = psycopg2.connect(database='family_db_72019', user='denise', password='', host="127.0.0.1", port="5432")
-       con = psycopg2.connect(database='family_db_72019', user='mlab', password='mlab92', host="127.0.0.1", port="5432")
+       # con = psycopg2.connect(database='family_db_72019', user='mlab', password='mlab92', host="127.0.0.1", port="5432")
+       con = psycopg2.connect(database='family_db_72019', user='super', password='ps92712268',
+                              host='mandadilab-1984.postgres.pythonanywhere-services.com', port='11984')
     except ValueError:
         print("Not able to connect database")
 
