@@ -74,7 +74,20 @@ WSGI_APPLICATION = 'anot.wsgi.application'
 
 # settings for webfaction
 # anot is a database for user information. on release
+# pythonanywhere
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'super',
+        'PASSWORD': 'ps92712268',
+        'HOST': 'mandadilab-1984.postgres.pythonanywhere-services.com',
+        'PORT': '11984',
+    }
+}
 
+
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -85,7 +98,7 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+'''
 
 '''
 # for office macbook
