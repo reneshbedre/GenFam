@@ -16,7 +16,8 @@ SECRET_KEY = 'ga-$=&3z((+n$f%i^um*cnw9@ts5@pqwqp(n-*3cglsn7ngn1o'
 DEBUG = True  # False is required to run django on webfaction
 
 ALLOWED_HOSTS = ['mandadilab.webfactional.com',
-                 '127.0.0.1']
+                 '127.0.0.1',
+                 'mandadilab.pythonanywhere.com']
 
 
 # Application definition
