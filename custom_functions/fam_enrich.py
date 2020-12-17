@@ -170,8 +170,10 @@ def enrichment_analysis(_uniq_id_count_dict, _get_user_id_count_for_gene_fam, _g
 
 def get_bg_gene_count(gfam_group):
     try:
-        # con = psycopg2.connect(database='family_db_72019', user='denise', password='', host="127.0.0.1", port="5432")
-        con = psycopg2.connect(database='family_db_72019', user='mlab', password='mlab92', host="127.0.0.1", port="5432")
+        # con = psycopg2.connect(database='family_db_72019', user='', password='', host="127.0.0.1", port="5432")
+        # con = psycopg2.connect(database='family_db_72019', user='mlab', password='mlab92', host="127.0.0.1", port="5432")
+        con = psycopg2.connect(database='family_db_72019', user='super', password='ps92712268',
+                               host='mandadilab-1984.postgres.pythonanywhere-services.com', port='11984')
     except ValueError:
         print("Not able to connect database")
     cur = con.cursor()
