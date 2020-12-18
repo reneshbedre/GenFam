@@ -76,6 +76,7 @@ WSGI_APPLICATION = 'anot.wsgi.application'
 # settings for webfaction
 # anot is a database for user information. on release
 # pythonanywhere
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -154,3 +155,6 @@ USE_TZ = True
 
 STATIC_ROOT = '/home/mandadilab/webapps/family_static'
 STATIC_URL = '/static/'
+
+
+

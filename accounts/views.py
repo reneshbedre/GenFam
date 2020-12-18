@@ -18,7 +18,7 @@ from django.urls import reverse
 
 # @login_required
 def index(request):
-    return render(request, 'accounts/index.html', {'user': request.user})
+    return render(request, 'accounts/index_2.html', {'user': request.user})
 
 
 def doc(request):
