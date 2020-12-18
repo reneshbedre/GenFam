@@ -17,7 +17,8 @@ DEBUG = True  # False is required to run django on webfaction
 
 ALLOWED_HOSTS = ['mandadilab.webfactional.com',
                  '127.0.0.1',
-                 'mandadilab.pythonanywhere.com']
+                 'mandadilab.pythonanywhere.com',
+                 'www.mandadilab.com']
 
 
 # Application definition
