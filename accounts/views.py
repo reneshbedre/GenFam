@@ -21,6 +21,10 @@ def index(request):
     return render(request, 'accounts/index_2.html', {'user': request.user})
 
 
+def genfam(request):
+    return render(request, 'accounts/index.html', {'user': request.user})
+
+
 def doc(request):
     return render(request, 'accounts/doc.html', {'user': request.user})
 

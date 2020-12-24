@@ -6,6 +6,7 @@ app_name = 'accounts'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^genfam/$', views.genfam, name='genfam'),
     url(r'^doc/$', views.doc, name='doc'),
     url(r'^dload/$', views.dload, name='dload'),
     url(r'^news/$', views.news, name='news'),
